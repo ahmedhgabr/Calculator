@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="CircleButton" parent="Widget.AppCompat.Button">
+        <item name="android:layout_width">76dp</item>
+        <item name="android:layout_height">76dp</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:background">@drawable/circle_button_bg</item>
+    </style>
+
+    <style name="CircleButton.Number">
+        <item name="android:textColor">@color/brown</item>
+        <item name="android:backgroundTint">@color/off_white</item>
+    </style>
+
+    <style name="CircleButton.Operation">
+        <item name="android:textColor">@color/off_white</item>
+        <item name="android:backgroundTint">@color/orange</item>
+    </style>
+
+</resources>
