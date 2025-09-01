@@ -73,10 +73,11 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <ImageButton
         android:id="@+id/button_arrow_back"
         style="@style/CircleButton.Number"
-        android:text="-"
+        android:gravity="center"
+        android:src="@drawable/arrow_left"
         android:onClick="onClickBackspace"
         app:layout_constraintEnd_toStartOf="@+id/button_moduls"
         app:layout_constraintHorizontal_bias="0.5"

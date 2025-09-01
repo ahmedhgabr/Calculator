@@ -1,6 +1,7 @@
 package com.ahmedhgabr.calculator
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -60,6 +61,19 @@ class MainActivity : AppCompatActivity() {
         val button = view as androidx.appcompat.widget.AppCompatButton
         val btnValue = button.text.toString()
         addToEquation(btnValue)
+        if (btnValue == "%") {
+            Log.d("TAG", "onClickOperation: %")
+            val equation = binding.textViewEquation.text.toString()
+            val lastNumber = equation.takeLastWhile { it.isDigit() || it == '.' }
+            if (lastNumber.isNotEmpty()) {
+                val percentageValue = lastNumber.toDouble() / 100
+                val newEquation =
+                    equation.dropLast(lastNumber.length) + percentageValue.toStringTrimmed()
+                textViewInput.text = newEquation
+            } else if (btnValue != "±") {
+
+            }
+        }
     }
 
     fun onClickEquals(view: View) {
@@ -125,7 +139,7 @@ class MainActivity : AppCompatActivity() {
                     currentNumber += char
                 }
 
-                char == '+' || char == '-' || char == 'x' || char == '/' -> {
+                char == '+' || char == '-' || char == 'x' || char == '/' || char == '%' -> {
                     if (currentNumber.isNotEmpty()) {
                         val number = currentNumber.toDouble()
                         output = when (currentOperation) {
