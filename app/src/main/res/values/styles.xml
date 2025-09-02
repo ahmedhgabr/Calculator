@@ -11,12 +11,15 @@
 
     <style name="CircleButton.Number">
         <item name="android:textColor">@color/brown</item>
-        <item name="android:backgroundTint">@color/off_white</item>
+<!--        <item name="android:backgroundTint">@color/off_white</item>-->
+        <item name="android:background">@drawable/circle_button_bg</item>
+
     </style>
 
     <style name="CircleButton.Operation">
         <item name="android:textColor">@color/off_white</item>
-        <item name="android:backgroundTint">@color/orange</item>
+        <item name="android:background">@drawable/circle_button_operation_bg</item>
+<!--        <item name="android:backgroundTint">@color/orange</item>-->
     </style>
 
 </resources>
