@@ -10,6 +10,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.ahmedhgabr.calculator.databinding.ActivityMainBinding
 import java.math.MathContext
+import kotlin.math.log
 
 class MainActivity : AppCompatActivity() {
 
@@ -66,42 +67,55 @@ class MainActivity : AppCompatActivity() {
         isDecimal = false
         if (btnValue == "%") {
             var lastNumber = ""
-            var i = 0
-            textViewInput.text.toString().forEach { it ->
-                if (it in operations) {
-                    return@forEach
+            var index = -1
+            for ( i in 1..textViewInput.text.length) {
+                var char = textViewInput.text.toString()[textViewInput.text.length - i]
+                if (char == '+' || char == '-' || char == 'x' || char == '/' || char == '%') {
+                    index = i -1
+                    break
                 }
-                i += 1
             }
-            lastNumber = textViewInput.text.toString().takeLast(i)
+            if (index == -1) {
+                index = textViewInput.text.length
+            }
+            lastNumber = textViewInput.text.toString().takeLast( index)
             if (lastNumber.isEmpty()) {
                 return
             }
             val changedSign = lastNumber.toDouble() / 100
-            var newEquation = textViewInput.text.toString().dropLast(i)+ changedSign.toStringTrimmed()
+            var newEquation = textViewInput.text.toString().dropLast(index)+ changedSign.toStringTrimmed()
             textViewInput.text = newEquation
             return
         }
         else if (btnValue == "±") {
             // change the sign of the last number
             var lastNumber = ""
-            var i = 0
-            textViewInput.text.toString().forEach { it ->
-                if (it in operations) {
-                    return@forEach
+            var index = -1
+            for ( i in 1..textViewInput.text.length) {
+                var char = textViewInput.text.toString()[textViewInput.text.length - i]
+                if (char == '+' || char == '-' || char == 'x' || char == '/' || char == '%') {
+                    index = i
+                    break
                 }
-                i += 1
             }
-            lastNumber = textViewInput.text.toString().takeLast(i)
+            if (index == -1) {
+                index = textViewInput.text.length
+            }
+            lastNumber = textViewInput.text.toString().takeLast( index)
             if (lastNumber.isEmpty()) {
                 return
+            }
+            if (lastNumber.contains('x') || lastNumber.contains('/')) {
+                lastNumber = lastNumber.replace('x', '+')
+                lastNumber = lastNumber.replace('/', '+')
+                index = index -1
             }
             val changedSign = -1 * lastNumber.toDouble()
             var newEquation = ""
             if (changedSign > 0)
-                newEquation = textViewInput.text.toString().dropLast(i)+ "+"+ changedSign.toStringTrimmed()
+                newEquation = textViewInput.text.toString().dropLast(index)+ "+"+ changedSign.toStringTrimmed()
             else
-                newEquation = textViewInput.text.toString().dropLast(i)+ changedSign.toStringTrimmed()
+                newEquation = textViewInput.text.toString().dropLast(index)+ changedSign.toStringTrimmed()
             textViewInput.text = newEquation
             return
         }
