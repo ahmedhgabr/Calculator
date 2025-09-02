@@ -179,7 +179,12 @@ class MainActivity : AppCompatActivity() {
                             '+' -> output + number
                             '-' -> output - number
                             'x' -> output * number
-                            '/' -> output / number
+                            '/' -> {
+                                if (number == 0.0) {
+                                    throw ArithmeticException("Division by zero")
+                                }
+                                output / number
+                            }
                             '%' -> output % number
                             null -> number
                             else -> output
@@ -197,7 +202,12 @@ class MainActivity : AppCompatActivity() {
                 '+' -> output + number
                 '-' -> output - number
                 'x' -> output * number
-                '/' -> output / number
+                '/' -> {
+                    if (number == 0.0) {
+                        throw ArithmeticException("Division by zero")
+                    }
+                    output / number
+                }
                 '%' -> output % number
                 null -> number
                 else -> output
@@ -211,6 +221,8 @@ class MainActivity : AppCompatActivity() {
         val textview = textViewInput
         val old = textview.text.toString()
         if (old == "0") {
+            textview.text = value.toString()
+        } else if (old == "Error") {
             textview.text = value.toString()
         } else {
             val newText = old + value
