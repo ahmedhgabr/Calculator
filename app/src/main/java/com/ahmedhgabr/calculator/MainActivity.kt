@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
 
     var isDecimal: Boolean = false
-
+    val operations = listOf('+', '-', 'x', '/', '%', '±')
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -60,21 +60,54 @@ class MainActivity : AppCompatActivity() {
     fun onClickOperation(view: View) {
         val button = view as androidx.appcompat.widget.AppCompatButton
         val btnValue = button.text.toString()
-        addToEquation(btnValue)
-        if (btnValue == "%") {
-            Log.d("TAG", "onClickOperation: %")
-            val equation = binding.textViewEquation.text.toString()
-            val lastNumber = equation.takeLastWhile { it.isDigit() || it == '.' }
-            if (lastNumber.isNotEmpty()) {
-                val percentageValue = lastNumber.toDouble() / 100
-                val newEquation =
-                    equation.dropLast(lastNumber.length) + percentageValue.toStringTrimmed()
-                textViewInput.text = newEquation
-            } else if (btnValue != "±") {
-
-            }
+        if (textViewInput.text.toString().last() in operations) {
+            return
         }
+        isDecimal = false
+        if (btnValue == "%") {
+            var lastNumber = ""
+            var i = 0
+            textViewInput.text.toString().forEach { it ->
+                if (it in operations) {
+                    return@forEach
+                }
+                i += 1
+            }
+            lastNumber = textViewInput.text.toString().takeLast(i)
+            if (lastNumber.isEmpty()) {
+                return
+            }
+            val changedSign = lastNumber.toDouble() / 100
+            var newEquation = textViewInput.text.toString().dropLast(i)+ changedSign.toStringTrimmed()
+            textViewInput.text = newEquation
+            return
+        }
+        else if (btnValue == "±") {
+            // change the sign of the last number
+            var lastNumber = ""
+            var i = 0
+            textViewInput.text.toString().forEach { it ->
+                if (it in operations) {
+                    return@forEach
+                }
+                i += 1
+            }
+            lastNumber = textViewInput.text.toString().takeLast(i)
+            if (lastNumber.isEmpty()) {
+                return
+            }
+            val changedSign = -1 * lastNumber.toDouble()
+            var newEquation = ""
+            if (changedSign > 0)
+                newEquation = textViewInput.text.toString().dropLast(i)+ "+"+ changedSign.toStringTrimmed()
+            else
+                newEquation = textViewInput.text.toString().dropLast(i)+ changedSign.toStringTrimmed()
+            textViewInput.text = newEquation
+            return
+        }
+        addToEquation(btnValue)
     }
+
 
     fun onClickEquals(view: View) {
         val equation = textViewInput.text.toString()
@@ -147,6 +180,7 @@ class MainActivity : AppCompatActivity() {
                             '-' -> output - number
                             'x' -> output * number
                             '/' -> output / number
+                            '%' -> output % number
                             null -> number
                             else -> output
                         }
@@ -164,6 +198,7 @@ class MainActivity : AppCompatActivity() {
                 '-' -> output - number
                 'x' -> output * number
                 '/' -> output / number
+                '%' -> output % number
                 null -> number
                 else -> output
             }
